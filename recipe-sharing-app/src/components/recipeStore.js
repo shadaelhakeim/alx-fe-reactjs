@@ -6,10 +6,30 @@ const useRecipeStore = create((set) => ({
   searchTerm: "",
   filteredRecipes: [],
 
-  // Action to set the search term
+  // Add new recipe
+  addRecipe: (newRecipe) =>
+    set((state) => ({
+      recipes: [...state.recipes, newRecipe],
+    })),
+
+  // Update existing recipe
+  updateRecipe: (updatedRecipe) =>
+    set((state) => ({
+      recipes: state.recipes.map((recipe) =>
+        recipe.id === updatedRecipe.id ? updatedRecipe : recipe
+      ),
+    })),
+
+  // Delete a recipe
+  deleteRecipe: (id) =>
+    set((state) => ({
+      recipes: state.recipes.filter((recipe) => recipe.id !== id),
+    })),
+
+  // Set the search term
   setSearchTerm: (term) => set({ searchTerm: term }),
 
-  // Action to filter recipes based on the search term
+  // Filter recipes based on the search term
   filterRecipes: () =>
     set((state) => ({
       filteredRecipes: state.recipes.filter((recipe) =>

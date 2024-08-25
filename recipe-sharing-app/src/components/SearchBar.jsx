@@ -6,9 +6,8 @@ const SearchBar = () => {
   const filterRecipes = useRecipeStore((state) => state.filterRecipes);
 
   const handleSearch = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    filterRecipes(); // Trigger filtering whenever the search term changes
+    setSearchTerm(e.target.value);
+    filterRecipes();
   };
 
   return (
