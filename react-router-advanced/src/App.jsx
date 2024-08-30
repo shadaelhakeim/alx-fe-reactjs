@@ -5,7 +5,7 @@ import Login from './components/Login';
 import NotFound from './components/NotFound';
 import Post from './components/Post';
 import ProtectedRoute from './components/ProtectedRoute';
-
+import BlogPost from './components/BlogPost'; 
 const isAuthenticated = true; // Simulate authentication stat
 
 
@@ -26,7 +26,13 @@ function App() {
       <Profile />
     </ProtectedRoute>
   }
-/>
+      />
+      
+      <Routes>
+        {/* Other routes */}
+        <Route path="/blog/:id" element={<BlogPost />} /> {/* Dynamic route */}
+      </Routes>
+
     </Router>
   );
 }
