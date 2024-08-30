@@ -15,6 +15,7 @@ const PostsComponent = () => {
     isLoading,
     isError,
     isFetching,
+    refetch, // <-- Add refetch function
   } = useQuery('posts', fetchPosts, {
     cacheTime: 1000 * 60 * 5, // 5 minutes
     staleTime: 1000 * 60, // 1 minute
@@ -34,6 +35,8 @@ const PostsComponent = () => {
           <li key={post.id}>{post.title}</li>
         ))}
       </ul>
+      {/* Add button with onClick handler */}
+      <button onClick={refetch}>Refetch Posts</button>
     </div>
   );
 };
