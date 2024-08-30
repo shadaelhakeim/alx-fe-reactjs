@@ -33,6 +33,18 @@ function App() {
         <Route path="/blog/:id" element={<BlogPost />} /> {/* Dynamic route */}
       </Routes>
 
+        <Routes>
+        {/* Example protected route */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        {/* Other routes */}
+      </Routes>
     </Router>
   );
 }
