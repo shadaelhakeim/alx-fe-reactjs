@@ -1,63 +1,68 @@
-import { useState } from 'react';
+// src/components/RegistrationForm.jsx
+import React, { useState } from "react";
 
-const RegistrationForm = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function RegistrationForm() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!username) newErrors.username = "Username Is Requiered";
+    if (!email) newErrors.email = "Email Is Requiered";
+    if (!password) newErrors.password = "Password Is Requiered";
+    return newErrors;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Basic validation
-    const validationErrors = {};
-    if (!username) validationErrors.username = 'Username is required';
-    if (!email) validationErrors.email = 'Email is required';
-    if (!password) validationErrors.password = 'Password is required';
-
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      // Submit the form (mock submission)
-      console.log({ username, email, password });
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
+    console.log("Form submitted:", { username, email, password });
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Username</label>
+        <label htmlFor="username">Username:</label>
         <input
           type="text"
+          id="username"
+          name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && (
+          <div style={{ color: "red" }}>{errors.username}</div>
+        )}
       </div>
-
       <div>
-        <label>Email</label>
+        <label htmlFor="email">Email:</label>
         <input
           type="email"
+          id="email"
+          name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {errors.email && <p>{errors.email}</p>}
       </div>
-
       <div>
-        <label>Password</label>
+        <label htmlFor="password">Password:</label>
         <input
           type="password"
+          id="password"
+          name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {errors.password && <p>{errors.password}</p>}
       </div>
-
       <button type="submit">Register</button>
     </form>
   );
-};
+}
 
 export default RegistrationForm;
