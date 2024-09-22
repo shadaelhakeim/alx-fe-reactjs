@@ -6,24 +6,32 @@ function Search() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
- const handleSearch = async (e) => {
+const handleSearch = async (e) => {
   e.preventDefault();
   setLoading(true);
   setError(null);
 
   try {
     const response = await fetchUserData(username);
-       if (response.data && response.data.login) {
-      setUserData(response.data);
+
+    if (response && response.data) {
+      // Check if login exists in the response
+      if (response.data.login) {
+        setUserData(response.data);
+      } else {
+        throw new Error("User not found");
+      }
     } else {
-      throw new Error(); // Throw an error if login doesn't exist
+      throw new Error("User not found");
     }
-  } catch {
+  } catch (err) {
+    // Log the actual error for debugging
+    console.error(err);
     setError("Looks like we can't find the user.");
   } finally {
     setLoading(false);
   }
-    };
+};
 
 
   return (
