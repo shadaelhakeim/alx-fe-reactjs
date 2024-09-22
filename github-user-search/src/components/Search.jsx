@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
 function Search() {
@@ -20,10 +20,18 @@ function Search() {
 
     try {
       const response = await fetchUserData(username, location, minRepos);
-      setUserData(response.data.items); // Set initial user data
-      setTotalPages(Math.ceil(response.data.total_count / 30)); // Assuming 30 items per page
-    } catch {
-      setError("Looks like we can't find any users.");
+      
+      // Check if response has data
+      if (response.data && response.data.items) {
+        setUserData(response.data.items);
+        setTotalPages(Math.ceil(response.data.total_count / 30)); // Assuming 30 items per page
+      } else {
+        throw new Error("No user data found.");
+      }
+    } catch (err) {
+      // Log the actual error for debugging
+      console.error(err);
+      setError("Looks like we can't find any users."); // Set a user-friendly error message
     } finally {
       setLoading(false);
     }
@@ -33,9 +41,14 @@ function Search() {
     setLoading(true);
     try {
       const response = await fetchUserData(username, location, minRepos, page + 1);
-      setUserData((prev) => [...prev, ...response.data.items]); // Append new users
-      setPage((prev) => prev + 1); // Increment page number
-    } catch  {
+      if (response.data && response.data.items) {
+        setUserData((prev) => [...prev, ...response.data.items]); // Append new users
+        setPage((prev) => prev + 1); // Increment page number
+      } else {
+        throw new Error("No more users found.");
+      }
+    } catch (err) {
+      console.error(err);
       setError("Failed to load more users.");
     } finally {
       setLoading(false);
@@ -72,14 +85,14 @@ function Search() {
       </form>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-      {userData && userData.length > 0 && (
+      {userData.length > 0 && (
         <div>
           {userData.map((user) => (
             <div key={user.id} className="border-b py-2">
               <h2>{user.login}</h2>
               <p>Location: {user.location || 'N/A'}</p>
               <p>Repositories: {user.public_repos}</p>
-              {user.avatar_url && ( // Check if avatar_url exists
+              {user.avatar_url && (
                 <img src={user.avatar_url} alt={`${user.login}'s avatar`} className="w-16 h-16 rounded-full" />
               )}
               <a href={user.html_url} target="_blank" rel="noopener noreferrer">
