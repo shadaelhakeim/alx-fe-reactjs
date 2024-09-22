@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import  { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
 function Search() {
@@ -19,28 +19,23 @@ function Search() {
     setUserData([]); // Reset user data on new search
 
     try {
-    const response = await fetchUserData(username, location, minRepos);
-    if (response.data.login) {
+      const response = await fetchUserData(username, location, minRepos);
       setUserData(response.data.items); // Set initial user data
-      setTotalPages(Math.ceil(response.data.total_count / 30));
-      } else {
-        throw new Error("Looks like we cant find the user.");
-      }
-  } catch (err) {
-    // Log the actual error for debugging
-    console.error(err);
-    setError("Looks like we can't find the user.");
-  } finally {
-    setLoading(false);
-  }
-};
+      setTotalPages(Math.ceil(response.data.total_count / 30)); // Assuming 30 items per page
+    } catch {
+      setError("Looks like we can't find any users.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleLoadMore = async () => {
     setLoading(true);
     try {
       const response = await fetchUserData(username, location, minRepos, page + 1);
       setUserData((prev) => [...prev, ...response.data.items]); // Append new users
       setPage((prev) => prev + 1); // Increment page number
-    } catch {
+    } catch  {
       setError("Failed to load more users.");
     } finally {
       setLoading(false);
@@ -84,6 +79,9 @@ function Search() {
               <h2>{user.login}</h2>
               <p>Location: {user.location || 'N/A'}</p>
               <p>Repositories: {user.public_repos}</p>
+              {user.avatar_url && ( // Check if avatar_url exists
+                <img src={user.avatar_url} alt={`${user.login}'s avatar`} className="w-16 h-16 rounded-full" />
+              )}
               <a href={user.html_url} target="_blank" rel="noopener noreferrer">
                 View Profile
               </a>
