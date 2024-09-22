@@ -31,7 +31,7 @@ function Search() {
     } catch (err) {
       // Log the actual error for debugging
       console.error(err);
-      setError("Looks like we can't find any users."); // Set a user-friendly error message
+      setError("Looks like we cant find the user"); // Set a user-friendly error message
     } finally {
       setLoading(false);
     }
