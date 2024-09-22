@@ -13,13 +13,19 @@ function Search() {
 
   try {
     const response = await fetchUserData(username);
-    setUserData(response.data);
+       if (response.data && response.data.login) {
+      setUserData(response.data);
+    } else {
+      throw new Error(); // Throw an error if login doesn't exist
+    }
   } catch {
     setError("Looks like we can't find the user.");
   } finally {
     setLoading(false);
   }
-};
+    };
+
+
   return (
     <div>
       <form onSubmit={handleSearch}>
