@@ -24,7 +24,7 @@ function Search() {
       setUserData(response.data.items); // Set initial user data
       setTotalPages(Math.ceil(response.data.total_count / 30));
       } else {
-        throw new Error("User not found");
+        throw new Error("Looks like we cant find the user.");
       }
   } catch (err) {
     // Log the actual error for debugging
