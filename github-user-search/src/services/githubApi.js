@@ -11,3 +11,4 @@ export const getUserProfile = async (username) => {
     return null;
   }
 };
+
